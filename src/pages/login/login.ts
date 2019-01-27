@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { UserService } from '../../provider/user.service';
 import { AlertService } from '../../provider/alert.service';
 import { MessageEnums } from '../../constants/constant-enum';
@@ -28,8 +28,10 @@ export class LoginPage {
     public navParams: NavParams,
     private userService: UserService,
     private alertService: AlertService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private menu: MenuController
   ) {
+    this.menu.swipeEnable(false);
   }
 
   ionViewDidLoad() {
@@ -38,7 +40,7 @@ export class LoginPage {
 
   // Method created for logging and checking whether user exists or not
   loginUser(data: any, form: NgForm) {
-    this.errorMessage='';
+    this.errorMessage = '';
     if (!this.validateField(form)) {
       this.alertService.showAlert('Error in form', this.errorMessage, ['OK']);
       form.reset();
@@ -66,7 +68,7 @@ export class LoginPage {
     Object.keys(form.controls).forEach(element => {
       console.log(element)
       if (form.control.get(element).invalid) {
-        this.errorMessage += this.getErrorMessage(element)+'<br>';
+        this.errorMessage += this.getErrorMessage(element) + '<br>';
       }
     })
     return this.errorMessage == '' ? true : false;
